@@ -10,10 +10,16 @@ export default class Header extends Component {
     constructor(props) {
         super(props);
         this.state = {open: false};
+        this.closeMenu = this.closeMenu.bind(this);
+        this.touchTap = this.touchTap.bind(this);
     }
 
     touchTap(event) {
         this.setState({open: !this.state.open});
+    }
+
+    closeMenu() {
+        this.setState({open: false});
     }
 
     onRequestChange(open) {
@@ -21,20 +27,32 @@ export default class Header extends Component {
     }
     
     navTo(path) { 
-        this.setState({open: false});
+        this.closeMenu();
         browserHistory.push('/' + path);
     };
 
     render() {
         return (
             <div id="header">
-                <Drawer open={this.state.open} docked={false} onRequestChange={(open) => this.setState({open})}>
-                  <MenuItem onClick={this.navTo.bind(this, '')}>Home</MenuItem>
-                  <MenuItem onClick={this.navTo.bind(this, 'posts')}>Posts</MenuItem>
-                </Drawer>
-                <AppBar title="React Loopback Example"
+                <AppBar
+                    title="React Loopback Example"
                     iconClassNameRight="muidocs-icon-navigation-expand-more"
-                    iconElementLeft={<IconButton onClick={this.touchTap.bind(this)}><Menu /></IconButton>} />
+                    iconElementLeft={
+                        <IconButton onClick={this.touchTap}>
+                            <Menu />
+                        </IconButton>
+                    } />
+
+                <Drawer
+                    open={this.state.open}
+                    docked={false}
+                    onRequestChange={(open) => this.setState({open})}>
+
+                    <AppBar title="Menu" onTitleTouchTap={this.closeMenu} onLeftIconButtonTouchTap={this.closeMenu}/>
+                    <MenuItem onClick={this.navTo.bind(this, '')}>Home</MenuItem>
+                    <MenuItem onClick={this.navTo.bind(this, 'posts')}>Posts</MenuItem>
+
+                </Drawer>
             </div>
         )
     };

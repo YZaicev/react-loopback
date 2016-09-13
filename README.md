@@ -1,1 +1,5 @@
 # react-loopback
+
+```
+npm start
+```
