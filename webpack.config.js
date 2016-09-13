@@ -1,5 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
   devtool: 'eval',
@@ -22,6 +23,10 @@ module.exports = {
       loaders: ['babel'],
       exclude: /node_modules/,
       include: path.join(__dirname, 'client')
+    },
+    {
+      test: /\.css$/,
+      loader: 'style!css-loader'
     }]
   }
 }

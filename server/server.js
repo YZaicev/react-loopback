@@ -6,14 +6,24 @@ var webpackHotMiddleware = require('webpack-hot-middleware');
 var config = require(`../webpack.config.js`);
 var app = module.exports = loopback();
 var compiler = webpack(config);
+var express = require('express');
+
+var path = require('path');
 
 app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.publicPath }));  
 app.use(webpackHotMiddleware(compiler));
 
 var explorer = require('loopback-component-explorer');  // Module was loopback-explorer in v. 2.0.1 and earlier
 
-// v2.x
 app.use('/explorer', explorer.routes(app, {}));
+
+app.engine('html', require('ejs').renderFile);
+
+// app.use(loopback.static(path.dirname(app.get('indexFile'))));
+
+// app.use('*', function (req, res) {
+//   res.render(__dirname + '/../client/index.html')
+// });
 
 app.start = function() {
   // start the web server
