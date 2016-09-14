@@ -6,5 +6,9 @@ module.exports.routes = {
 	"/posts": {
 		"name": "posts",
 		"handler": "Posts"
+	},
+	"/login": {
+		"name": "login",
+		"handler": "Login"
 	}
 };

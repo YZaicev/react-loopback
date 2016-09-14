@@ -3,6 +3,7 @@ import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
+import FlatButton from 'material-ui/FlatButton';
 import Menu from 'material-ui/svg-icons/navigation/menu';
 import { browserHistory } from 'react-router'
 
@@ -36,13 +37,12 @@ export default class Header extends Component {
             <div id="header">
                 <AppBar
                     title="React Loopback Example"
-                    iconClassNameRight="muidocs-icon-navigation-expand-more"
                     iconElementLeft={
                         <IconButton onClick={this.touchTap}>
                             <Menu />
                         </IconButton>
-                    } />
-
+                    }
+                    iconElementRight={<FlatButton label="Login" onClick={this.navTo.bind(this, 'login')} />} />
                 <Drawer
                     open={this.state.open}
                     docked={false}

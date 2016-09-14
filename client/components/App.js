@@ -9,7 +9,7 @@ export default function App({ children }) {
     	<MuiThemeProvider>
     		<div>
 			    <Header />
-		        <div>{children}</div>
+		        <div className="container-fluid">{children}</div>
 	        </div>
 		</MuiThemeProvider>
     )
