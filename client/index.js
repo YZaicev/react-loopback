@@ -24,8 +24,8 @@ render(
     <Provider store={store}>
 	    <Router history={history}>
 			<Route path="/" component={App}>
-			<Route path="/login" component={Login} />
-			<Route path="/posts" component={Posts} />
+				<Route path="/login" component={Login} />
+				<Route path="/posts" component={Posts} />
 			</Route>
 	    </Router>
     </Provider>,

@@ -1,19 +1,20 @@
-var loopback = require('loopback');
-var boot = require('loopback-boot');
-var webpack = require('webpack');
-var webpackDevMiddleware = require('webpack-dev-middleware');
-var webpackHotMiddleware = require('webpack-hot-middleware');
-var config = require(`../webpack.config.js`);
-var app = module.exports = loopback();
-var compiler = webpack(config);
-var express = require('express');
+const loopback = require('loopback');
+const boot = require('loopback-boot');
+const webpack = require('webpack');
+const webpackDevMiddleware = require('webpack-dev-middleware');
+const webpackHotMiddleware = require('webpack-hot-middleware');
+const express = require('express');
 
-var path = require('path');
+const config = require(`../webpack.config.js`);
+
+const app = module.exports = loopback();
+const compiler = webpack(config);
+const path = require('path');
 
 app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.publicPath }));  
 app.use(webpackHotMiddleware(compiler));
 
-var explorer = require('loopback-component-explorer');  // Module was loopback-explorer in v. 2.0.1 and earlier
+const explorer = require('loopback-component-explorer');  // Module was loopback-explorer in v. 2.0.1 and earlier
 
 app.use('/explorer', explorer.routes(app, {}));
 
@@ -25,14 +26,14 @@ app.engine('html', require('ejs').renderFile);
 //   res.render(__dirname + '/../client/index.html')
 // });
 
-app.start = function() {
+app.start = () => {
   // start the web server
-  return app.listen(function() {
+  return app.listen(() => {
     app.emit('started');
-    var baseUrl = app.get('url').replace(/\/$/, '');
+    const baseUrl = app.get('url').replace(/\/$/, '');
     console.log('Web server listening at: %s', baseUrl);
     if (app.get('loopback-component-explorer')) {
-      var explorerPath = app.get('loopback-component-explorer').mountPath;
+      const explorerPath = app.get('loopback-component-explorer').mountPath;
       console.log('Browse your REST API at %s%s', baseUrl, explorerPath);
     }
   });
@@ -40,7 +41,7 @@ app.start = function() {
 
 // Bootstrap the application, configure models, datasources and middleware.
 // Sub-apps like REST API are mounted via boot scripts.
-boot(app, __dirname, function(err) {
+boot(app, __dirname, (err) => {
   if (err) throw err;
 
   // start the server if `$ node server.js`

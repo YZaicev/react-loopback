@@ -4,5 +4,14 @@
     "localStorage": "",
     "file": "",
     "connector": "memory"
+  },
+  "PostgreSQL": {
+    "host": "localhost",
+    "port": 5432,
+    "database": "loopback",
+    "password": "loopback",
+    "name": "PostgreSQL",
+    "user": "loopback",
+    "connector": "postgresql"
   }
 }
