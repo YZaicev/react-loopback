@@ -21,7 +21,7 @@ function receivePosts(path, json) {
 export function fetchPosts(path) {
     return function (dispatch) {
         dispatch(requestPosts(path))
-        return fetch(`${"http://0.0.0.0:3000/api/"}${path}`)
+        return fetch(`${"http://localhost:3000/api/"}${path}`)
             .then(response => response.json())
             .then(json =>
                 dispatch(receivePosts(path, json))

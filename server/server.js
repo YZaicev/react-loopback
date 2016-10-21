@@ -10,6 +10,7 @@ const config = require(`../webpack.config.js`);
 const app = module.exports = loopback();
 const compiler = webpack(config);
 const path = require('path');
+const bodyParser = require('body-parser');
 
 app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.publicPath }));  
 app.use(webpackHotMiddleware(compiler));
@@ -19,6 +20,8 @@ const explorer = require('loopback-component-explorer');  // Module was loopback
 app.use('/explorer', explorer.routes(app, {}));
 
 app.engine('html', require('ejs').renderFile);
+
+app.use(bodyParser.json());
 
 // app.use(loopback.static(path.dirname(app.get('indexFile'))));
 

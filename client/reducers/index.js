@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux'
-import data from './posts'
+import posts from './posts'
+import account from './account'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 
 const app = combineReducers({
-    data,
+    posts,
+    account,
     routing: routerReducer
 })
 

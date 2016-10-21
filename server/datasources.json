@@ -13,5 +13,20 @@
     "name": "PostgreSQL",
     "user": "loopback",
     "connector": "postgresql"
+  },
+  "myEmailDataSource": {
+    "name": "myEmailDataSource",
+    "connector": "mail",
+    "defaultForType": "mail",
+    "transports": [{
+      "type": "SMTP",
+      "host": "smtp.gmail.com",
+      "secure": true,
+      "port": 465,
+      "auth": {
+        "user": "",
+        "pass": ""
+      }
+    }]
   }
 }

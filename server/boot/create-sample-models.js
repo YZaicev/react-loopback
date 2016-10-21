@@ -9,6 +9,12 @@ const posts = [{
     text: 'text 3'
 }];
 
+const user = {
+    email: 'admin@example.com',
+    password: 'qwe',
+    emailVerified: true
+};
+
 module.exports = (app) => {
     // TODO: use autoupdate if not need clear data
     app.dataSources.PostgreSQL.automigrate('post', (err) => {
@@ -17,7 +23,11 @@ module.exports = (app) => {
             if (err) throw err;
         });
     });
-    app.dataSources.PostgreSQL.automigrate('User', (err) => {
+    app.dataSources.PostgreSQL.automigrate('user', (err) => {
         if (err) throw err;
+        app.models.User.create(user, (err, userInstance) => {
+            if (err) throw err;
+            console.log(userInstance);
+        });
     });
 };

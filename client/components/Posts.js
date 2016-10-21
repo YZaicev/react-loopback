@@ -32,8 +32,8 @@ Posts.propTypes = {
 
 const mapStateToProps = (state) => {
     return {
-        items: state.data.items,
-        isFetching: state.data.isFetching
+        items: state.posts.items,
+        isFetching: state.posts.isFetching
     }
 }
 

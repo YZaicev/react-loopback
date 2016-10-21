@@ -1,11 +1,13 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import FlatButton from 'material-ui/FlatButton';
 import Menu from 'material-ui/svg-icons/navigation/menu';
+import { getAccount, logoutAccount } from '../actions/account'
 import { browserHistory } from 'react-router'
+import { connect } from 'react-redux'
 
 export default class Header extends Component {
     constructor(props) {
@@ -13,6 +15,10 @@ export default class Header extends Component {
         this.state = {open: false};
         this.closeMenu = this.closeMenu.bind(this);
         this.touchTap = this.touchTap.bind(this);
+    }
+
+    componentDidMount() {
+        this.props.dispatch(getAccount());
     }
 
     touchTap(event) {
@@ -30,7 +36,16 @@ export default class Header extends Component {
     navTo(path) { 
         this.closeMenu();
         browserHistory.push('/' + path);
-    };
+    }
+
+    logout() {
+        this.props.dispatch(logoutAccount());
+    }
+
+    componentWillReceiveProps(newProps) {
+        const { isLogin } = newProps;
+        !isLogin && browserHistory.push('/login');
+    }
 
     render() {
         return (
@@ -42,7 +57,7 @@ export default class Header extends Component {
                             <Menu />
                         </IconButton>
                     }
-                    iconElementRight={<FlatButton label="Login" onClick={this.navTo.bind(this, 'login')} />} />
+                    iconElementRight={this.props.isLogin ? <FlatButton label="Logout" onClick={this.logout.bind(this)} /> : <FlatButton label="Login" onClick={this.navTo.bind(this, 'login')} />} />
                 <Drawer
                     open={this.state.open}
                     docked={false}
@@ -55,5 +70,17 @@ export default class Header extends Component {
                 </Drawer>
             </div>
         )
-    };
+    }
 }
+
+Header.propTypes = {
+    dispatch: PropTypes.func.isRequired
+}
+
+const mapStateToProps = (state) => {
+    return {
+        isLogin: state.account.isLogin
+    }
+}
+
+export default connect(mapStateToProps)(Header)

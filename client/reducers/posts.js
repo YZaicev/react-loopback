@@ -1,4 +1,4 @@
-export default function list (state = {
+export default function posts (state = {
     isFetching: false, items: []
 }, action) {
     switch (action.type) {
