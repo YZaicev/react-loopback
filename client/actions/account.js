@@ -1,8 +1,11 @@
 import fetch from 'isomorphic-fetch'
+import { showErrorMessage } from './message'
 
 export const FETCH_ACCOUNT = 'FETCH_ACCOUNT'
 
-function request(params, responceCb) {
+const TWO_WEEKS = 60 * 60 * 24 * 7 * 2;
+
+function request(params, dispatch, responceCb) {
     const headers = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
@@ -26,10 +29,12 @@ function request(params, responceCb) {
     }
 
     return fetch('http://localhost:3000/api/' + params.path || '', requestParams)
-        .then(response => response.json())
+        .then((response) => {
+            return response.json();
+        })
         .then(responceCb)
-        .catch(function (ex) {
-            console.log('parsing failed', ex);
+        .catch((ex) => {
+            console.log('!!!!!! parsing failed', ex);
             return responceCb();
         });
 }
@@ -50,8 +55,8 @@ export function logoutAccount() {
     return (dispatch) => {
         return request({
             path: 'users/logout',
-            method: 'POST'
-        }, response => 
+            method: 'POST',
+        }, dispatch, response => 
             dispatch(() => {
                 localStorage.removeItem('accessToken');
                 return {
@@ -70,13 +75,21 @@ export function registerAccount(params) {
             params,
             path,
             method: 'POST',
-        }, response => 
+        }, dispatch, response => 
             dispatch(() => {
-                return {
+                const error = response.error;
+                const result = {
                     type: FETCH_ACCOUNT,
                     path,
                     isRegistered: true
                 };
+
+                if (error) {
+                    dispatch(showErrorMessage(error.message));
+                    result.isRegistered = false;
+                }
+                
+                return result;
             }())
         );
     }
@@ -85,22 +98,26 @@ export function registerAccount(params) {
 export function loginAccount(params) {
     return (dispatch) => {
         const path = 'users/login';
+        params.ttl = TWO_WEEKS;
         return request({
             params,
             path,
             method: 'POST'
-        }, response =>
+        }, dispatch, response =>
             dispatch(() => {
-                const accessToken = response.accessToken;
+                const error = response.error;
+                if (error) {
+                    dispatch(showErrorMessage(error.message))
+                }
+                const accessToken = response.id;
                 const result = {
                     type: FETCH_ACCOUNT,
-                    path,
-                    user: response,
-                    receivedAt: Date.now()
+                    path
                 };
                 if (accessToken) {
                     localStorage.setItem('accessToken', accessToken);
                     result.isLogin = true;
+                    result.userId = response.userId;
                 }
                 return result;
             }()));

@@ -4,6 +4,7 @@ import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import FlatButton from 'material-ui/FlatButton';
+import Snackbar from 'material-ui/Snackbar';
 import Menu from 'material-ui/svg-icons/navigation/menu';
 import { getAccount, logoutAccount } from '../actions/account'
 import { browserHistory } from 'react-router'
