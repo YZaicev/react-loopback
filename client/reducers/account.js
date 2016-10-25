@@ -1,7 +1,8 @@
 export default (state = {
         email: '',
         isLogin: false,
-        isRegistered: false
+        isRegistered: false,
+        account: {}
     }, action) => {
         switch (action.type) {
             case 'FETCH_ACCOUNT':
@@ -9,7 +10,8 @@ export default (state = {
                     isLogin: action.isLogin,
                     email: action.email,
                     accessToken: action.accessToken,
-                    isRegistered: action.isRegistered
+                    isRegistered: action.isRegistered,
+                    account: action.account
                 })
             default:
                 return state

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { isOpen } from '../actions/message'
+import { close } from '../actions/message'
 import Snackbar from 'material-ui/Snackbar';
 
 class Message extends Component {
@@ -18,7 +18,7 @@ class Message extends Component {
     }
 
     handleRequestClose() {
-        this.props.dispatch(isOpen(false));
+        this.props.dispatch(close());
     }
 
     render() {

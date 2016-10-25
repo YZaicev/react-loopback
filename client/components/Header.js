@@ -58,7 +58,9 @@ export default class Header extends Component {
                             <Menu />
                         </IconButton>
                     }
-                    iconElementRight={this.props.isLogin ? <FlatButton label="Logout" onClick={this.logout.bind(this)} /> : <FlatButton label="Login" onClick={this.navTo.bind(this, 'login')} />} />
+                    iconElementRight={this.props.isLogin ?
+                            <FlatButton label="Logout" onClick={this.logout.bind(this)} />:
+                            <FlatButton label="Login" onClick={this.navTo.bind(this, 'login')} />} />
                 <Drawer
                     open={this.state.open}
                     docked={false}
@@ -66,7 +68,7 @@ export default class Header extends Component {
 
                     <AppBar title="Menu" onTitleTouchTap={this.closeMenu} onLeftIconButtonTouchTap={this.closeMenu}/>
                     <MenuItem onClick={this.navTo.bind(this, '')}>Home</MenuItem>
-                    <MenuItem onClick={this.navTo.bind(this, 'posts')}>Posts</MenuItem>
+                    <MenuItem onClick={this.navTo.bind(this, 'users')}>Users</MenuItem>
 
                 </Drawer>
             </div>
@@ -80,7 +82,7 @@ Header.propTypes = {
 
 const mapStateToProps = (state) => {
     return {
-        isLogin: state.account.isLogin
+        isLogin: state.session.isLogin
     }
 }
 

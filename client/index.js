@@ -4,7 +4,7 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import configureStore from './store/configureStore'
 import App from './components/App'
-import Posts from './components/Posts'
+import Users from './components/Users'
 import Login from './components/Login'
 
 import { Router, Route, browserHistory } from 'react-router'
@@ -25,7 +25,7 @@ render(
 	    <Router history={history}>
 			<Route path="/" component={App}>
 				<Route path="/login" component={Login} />
-				<Route path="/posts" component={Posts} />
+				<Route path="/users" component={Users} />
 			</Route>
 	    </Router>
     </Provider>,

@@ -2,9 +2,10 @@ import React, { Component, PropTypes } from 'react'
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Snackbar from 'material-ui/Snackbar';
-import { loginAccount, registerAccount } from '../actions/account'
+import { getAccount, loginAccount, registerAccount } from '../actions/account'
 import { connect } from 'react-redux'
 import { browserHistory } from 'react-router'
+import { showMessage } from '../actions/message'
 
 const welcomeText = 'Welcome >_<';
 const verifiedText = 'Вы подтвердили свою почту, теперь можете войти';
@@ -12,16 +13,20 @@ const verifiedText = 'Вы подтвердили свою почту, тепе�
 class Login extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            username: '',
+            password: ''
+        };
     }
 
     componentDidMount() {
-        // this.props.dispatch(getAccount());
+        this.props.dispatch(getAccount());
     }
 
     componentWillMount() {
-        this.setState({
-            showVerifiedMessage: this.props.location.query.verified === "true"
-        });
+        if (this.props.location.query.verified === "true") {
+            this.props.dispatch(showMessage(verifiedText));
+        }
     }
 
     handleRequestClose() {
@@ -73,7 +78,6 @@ class Login extends Component {
             <div>
                 {
                     this.props.isRegistered ?<h3>На ваш почтовый адрес было отправлено письмо с подтверждением регистрации</h3> : 
-                    <div>
                     <div className="login-form">
                         <h3>{welcomeText}</h3>
                         <TextField
@@ -93,13 +97,6 @@ class Login extends Component {
                         {!verified ? <RaisedButton onTouchTap={this.onRegister.bind(this)} label="register" style={style} /> : ''}
                         <RaisedButton onTouchTap={this.onLogin.bind(this)} label="login" primary={true} />
                     </div>
-                    <Snackbar
-                      open={this.state.showVerifiedMessage}
-                      message={verifiedText}
-                      action="Закрыть"
-                      onActionTouchTap={this.handleRequestClose.bind(this)}
-                    />
-                    </div>
                 }
             </div>
         )
@@ -112,9 +109,8 @@ Login.propTypes = {
 
 const mapStateToProps = (state) => {
     return {
-        isLogin: state.account.isLogin,
-        isRegistered: state.account.isRegistered,
-        username: state.account.username
+        isLogin: state.session.isLogin,
+        isRegistered: state.session.isRegistered
     }
 }
 

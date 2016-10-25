@@ -1,23 +1,23 @@
 import React, { Component, PropTypes } from 'react'
-import { fetchPosts } from '../actions'
+import { fetchUsers } from '../actions/users'
 import { connect } from 'react-redux'
 
-class Posts extends Component {
+class Users extends Component {
     constructor(props) {
         super(props)
     }
 
     componentDidMount() {
-        this.props.dispatch(fetchPosts('posts'))
+        this.props.dispatch(fetchUsers('users'))
     }
 
     render() {
         return (
             <div>
-                <h2>Posts</h2>
+                <h2>Users</h2>
                 <ul>
-                    {this.props.items.map((post, i) =>
-                        <li key={i}>{post.title} - {post.text}</li>
+                    {this.props.items.map((user, i) =>
+                        <li key={i}>{user.id} - {user.email}</li>
                     )}
                 </ul>
             </div>
@@ -25,16 +25,16 @@ class Posts extends Component {
     }
 }
 
-Posts.propTypes = {
+Users.propTypes = {
     items: PropTypes.array.isRequired,
     dispatch: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => {
     return {
-        items: state.posts.items,
-        isFetching: state.posts.isFetching
+        items: state.users.items,
+        isFetching: state.users.isFetching
     }
 }
 
-export default connect(mapStateToProps)(Posts)
+export default connect(mapStateToProps)(Users)

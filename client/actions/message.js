@@ -2,18 +2,18 @@ import fetch from 'isomorphic-fetch'
 
 export const MESSAGE = 'MESSAGE'
 
-export function isOpen(state) {
+export function close() {
     return (dispatch) => {
         return dispatch(() => {
             return {
                 type: MESSAGE,
-                show: state
+                show: false
             }
         }());
     }
 }
 
-export function showErrorMessage(text) {
+export function showMessage(text) {
     return (dispatch) => {
         return dispatch(() => {
             return {

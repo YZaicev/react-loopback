@@ -30,10 +30,6 @@
     "dataSource": "db",
     "public": false
   },
-  "post": {
-    "dataSource": "PostgreSQL",
-    "public": true
-  },
   "Email": {
     "dataSource": "myEmailDataSource"
   }
