@@ -15,7 +15,9 @@ class Login extends Component {
         super(props);
         this.state = {
             username: '',
-            password: ''
+            password: '',
+            email: '',
+            isRegister: false
         };
     }
 
@@ -35,37 +37,44 @@ class Login extends Component {
         });
     }
 
-    handleNameChange(event) {
-        this.handleChange('username', event.target.value);
-    }
-
-    handlePasswordChange(event) {
-        this.handleChange('password', event.target.value);
-    }
-
-    handleChange(field, value) {
+    handleChange(field, event) {
         let params = {};
-        params[field] = value;
+        params[field] = event.target.value;
         this.setState(params);
     }
 
     onRegister() {
-        this.props.dispatch(registerAccount({
-            email: this.state.username,
-            password: this.state.password
-        }));
+        if (this.state.isRegister) {
+            this.props.dispatch(registerAccount({
+                username: this.state.username,
+                email: this.state.email,
+                password: this.state.password
+            }));
+        } else {
+            this.setState({
+                isRegister: true
+            });
+        }
+        
     }
 
     onLogin() {
-        this.props.dispatch(loginAccount({
-            email: this.state.username,
-            password: this.state.password
-        }));
+        if (!this.state.isRegister) {
+            this.props.dispatch(loginAccount({
+                email: this.state.email,
+                password: this.state.password
+            }));
+        } else {
+            this.setState({
+                isRegister: false
+            });
+        }
     }
 
     componentWillReceiveProps(newProps) {
-        const { isLogin } = newProps;
+        const { isLogin, isRegistered } = newProps;
         isLogin && browserHistory.push('/');
+        isRegistered && this.props.dispatch(showMessage('На ваш почтовый адрес было отправлено письмо с подтверждением регистрации'));
     }
 
     render() {
@@ -75,29 +84,31 @@ class Login extends Component {
         };
         const verified = this.props.location.query.verified === "true";
         return (
-            <div>
-                {
-                    this.props.isRegistered ?<h3>На ваш почтовый адрес было отправлено письмо с подтверждением регистрации</h3> : 
-                    <div className="login-form">
-                        <h3>{welcomeText}</h3>
-                        <TextField
-                            hintText="username"
-                            floatingLabelText="username"
-                            defaultValue=""
-                            value={this.state.username}
-                            onChange={this.handleNameChange.bind(this)} />
-                        <br />
-                        <TextField
-                            hintText="password"
-                            floatingLabelText="password"
-                            type="password"
-                            value={this.state.password}
-                            onChange={this.handlePasswordChange.bind(this)} />
-                        <br />
-                        {!verified ? <RaisedButton onTouchTap={this.onRegister.bind(this)} label="register" style={style} /> : ''}
-                        <RaisedButton onTouchTap={this.onLogin.bind(this)} label="login" primary={true} />
-                    </div>
-                }
+            <div className="login-form">
+                <h3>{welcomeText}</h3>
+                {this.state.isRegister ? <div><TextField
+                    hintText="username"
+                    floatingLabelText="username"
+                    defaultValue=""
+                    value={this.state.username}
+                    onChange={this.handleChange.bind(this, 'username')} />
+                <br /></div> : ''}
+                <TextField
+                    hintText="email"
+                    floatingLabelText="Email"
+                    defaultValue=""
+                    value={this.state.email}
+                    onChange={this.handleChange.bind(this, 'email')} />
+                <br />
+                <TextField
+                    hintText="password"
+                    floatingLabelText="password"
+                    type="password"
+                    value={this.state.password}
+                    onChange={this.handleChange.bind(this, 'password')} />
+                <br />
+                {!verified || this.props.isRegistered ? <RaisedButton onTouchTap={this.onRegister.bind(this)} label="register" style={style} primary={this.state.isRegister} /> : ''}
+                <RaisedButton onTouchTap={this.onLogin.bind(this)} label="login" primary={!this.state.isRegister} />
             </div>
         )
     }

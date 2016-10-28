@@ -1,6 +1,11 @@
 import React, { Component, PropTypes } from 'react'
+import {List, ListItem} from 'material-ui/List';
+import Subheader from 'material-ui/Subheader';
+import ActionGrade from 'material-ui/svg-icons/action/grade';
+import {pinkA200} from 'material-ui/styles/colors';
 import { fetchUsers } from '../actions/users'
 import { connect } from 'react-redux'
+import { browserHistory } from 'react-router'
 
 class Users extends Component {
     constructor(props) {
@@ -11,15 +16,24 @@ class Users extends Component {
         this.props.dispatch(fetchUsers('users'))
     }
 
+    goToUser(id) {
+        browserHistory.push('/users/' + id);
+    }
+
     render() {
+        const self = this;
         return (
             <div>
-                <h2>Users</h2>
-                <ul>
+                <List>
+                    <Subheader>Users</Subheader>
                     {this.props.items.map((user, i) =>
-                        <li key={i}>{user.id} - {user.email}</li>
-                    )}
-                </ul>
+                        <ListItem 
+                            key={i}
+                            primaryText={user.email} 
+                            onTouchTap={this.goToUser.bind(this, user.id)}
+                            leftIcon={<ActionGrade color={pinkA200}/> }
+                        />)}
+                </List>
             </div>
         )
     }

@@ -19,7 +19,7 @@ export function request(params, dispatch, responceCb) {
         headers: new Headers(headers)
     };
     
-    if (method == 'POST') {
+    if (method == 'POST' || method == 'PUT') {
         requestParams.body = JSON.stringify(params.params || {});
     }
 

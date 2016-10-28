@@ -1,6 +1,7 @@
 const user = {
     email: 'admin@example.com',
     password: 'qwe',
+    username: 'admin',
     emailVerified: true
 };
 

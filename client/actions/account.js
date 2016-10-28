@@ -10,28 +10,32 @@ export function getAccount() {
         const accessToken = localStorage.getItem('accessToken');
         const userId = localStorage.getItem('userId');
 
+        const result = {
+            type: FETCH_ACCOUNT,
+            isLogin: !!accessToken,
+            isRegistered: false,
+        };
+
         dispatch(() => {
-            return {
-                type: FETCH_ACCOUNT,
-                isLogin: !!accessToken,
-                isRegistered: false,
-            }
+            return result;
         }());
 
         if (accessToken && userId) {
             const path = 'users/' + userId;
+            result.path = path;
             return request({
                 path,
                 method: 'GET',
-            }, dispatch, account => 
+            }, dispatch, response => 
                 dispatch(() => {
-                    return {
-                        type: FETCH_ACCOUNT,
-                        path,
-                        isLogin: true,
-                        isRegistered: true,
-                        account
+                    const error = response.error;
+                    if (error) {
+                        result.isLogin = false;
+                        dispatch(logoutAccount());
+                    } else {
+                        result.account = response;
                     }
+                    return result;
                 }()));
         }
     }
@@ -75,7 +79,6 @@ export function registerAccount(params) {
                     dispatch(showMessage(error.message));
                     result.isRegistered = false;
                 }
-                
                 return result;
             }())
         );
@@ -94,7 +97,7 @@ export function loginAccount(params) {
             dispatch(() => {
                 const error = response.error;
                 if (error) {
-                    dispatch(showMessage(error.message))
+                    dispatch(showMessage(error.message));
                 }
                 const accessToken = response.id;
                 const result = {
@@ -105,8 +108,7 @@ export function loginAccount(params) {
                     const userId = response.userId;
                     localStorage.setItem('accessToken', accessToken);
                     localStorage.setItem('userId', userId);
-                    result.isLogin = true;
-                    result.userId = userId;
+                    dispatch(getAccount());
                 }
                 return result;
             }()));

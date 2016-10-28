@@ -5,6 +5,7 @@ import { Provider } from 'react-redux'
 import configureStore from './store/configureStore'
 import App from './components/App'
 import Users from './components/Users'
+import User from './components/User'
 import Login from './components/Login'
 
 import { Router, Route, browserHistory } from 'react-router'
@@ -26,6 +27,7 @@ render(
 			<Route path="/" component={App}>
 				<Route path="/login" component={Login} />
 				<Route path="/users" component={Users} />
+				<Route path="/users/:userId" component={User}/>
 			</Route>
 	    </Router>
     </Provider>,

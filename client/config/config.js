@@ -7,6 +7,10 @@ module.exports.routes = {
 		"name": "users",
 		"handler": "Users"
 	},
+	"/users/*": {
+		"name": "user",
+		"handler": "User"
+	},
 	"/login": {
 		"name": "login",
 		"handler": "Login"

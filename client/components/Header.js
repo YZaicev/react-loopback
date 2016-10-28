@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
-import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
+import AppBar from 'material-ui/AppBar';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import FlatButton from 'material-ui/FlatButton';
@@ -49,6 +49,10 @@ export default class Header extends Component {
     }
 
     render() {
+        const backgroundColor = {
+          backgroundColor: '#00bcd4',
+        };
+        const account = this.props.account;
         return (
             <div id="header">
                 <AppBar
@@ -56,11 +60,13 @@ export default class Header extends Component {
                     iconElementLeft={
                         <IconButton onClick={this.touchTap}>
                             <Menu />
-                        </IconButton>
-                    }
+                        </IconButton>}
                     iconElementRight={this.props.isLogin ?
-                            <FlatButton label="Logout" onClick={this.logout.bind(this)} />:
-                            <FlatButton label="Login" onClick={this.navTo.bind(this, 'login')} />} />
+                        <div style={{marginTop: '4px'}}>
+                            {this.props.username}<FlatButton style={{color: '#fff'}} color="#fff" label="Logout" onClick={this.logout.bind(this)} />
+                        </div>:
+                        <FlatButton label="Login" onClick={this.navTo.bind(this, 'login')} />} />
+                
                 <Drawer
                     open={this.state.open}
                     docked={false}
@@ -68,7 +74,7 @@ export default class Header extends Component {
 
                     <AppBar title="Menu" onTitleTouchTap={this.closeMenu} onLeftIconButtonTouchTap={this.closeMenu}/>
                     <MenuItem onClick={this.navTo.bind(this, '')}>Home</MenuItem>
-                    <MenuItem onClick={this.navTo.bind(this, 'users')}>Users</MenuItem>
+                    {this.props.isLogin ? <MenuItem onClick={this.navTo.bind(this, 'users')}>Users</MenuItem> : ''}
 
                 </Drawer>
             </div>
@@ -82,7 +88,8 @@ Header.propTypes = {
 
 const mapStateToProps = (state) => {
     return {
-        isLogin: state.session.isLogin
+        isLogin: state.session.isLogin,
+        username: state.session.account && state.session.account.username
     }
 }
 
